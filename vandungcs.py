@@ -1,47 +1,37 @@
-"""
-1 PHÂN TÍCH VÀ THIẾT KẾ GIẢI PHÁP
+# 1. Input / Output:
+# Input: patient_name (Chuỗi ký tự từ bàn phím), patient_age (Số nguyên từ bàn phím).
+# Output: Phiếu khám bệnh hợp lệ (Tên, Tuổi, Trạng thái) hoặc thông báo lỗi hệ thống và dừng chương trình.
+# 2. Giải pháp và Thuật toán:Dùng .strip() để xóa khoảng trắng thừa ở hai đầu chuỗi tên nhằm chặn bẫy bỏ trống hoặc nhập toàn dấu cách.
+# Kiểm tra bẫy dữ liệu: Nếu tên rỗng hoặc tuổi < 0 hoặc tuổi > 150 thì in thông báo lỗi và dùng sys.exit() ngắt chương trình lập tức.
+# Phân luồng bằng if-elif-else: Tuổi < 6 là "Bệnh nhi", tuổi \ge 80 là "Người cao tuổi", còn lại là "Khám thường".
 
-1. Phân tích Input / Output:
-- Input (Đầu vào): Hệ thống cần tiếp nhận 3 trường thông tin từ người dùng.
-  Cả 3 trường này đều mang kiểu dữ liệu chuỗi văn bản (str) vì chúng 
-  chứa các chữ cái, khoảng trắng và ký tự chữ số kết hợp:
-  + Họ và tên bệnh nhân (str)
-  + Mã bệnh án (str)
-  + Khoa/Phòng khám chỉ định (str)
-- Output (Đầu ra): Một chuỗi văn bản duy nhất hiển thị thông báo thành công 
-  và Phiếu khám bệnh điện tử theo đúng format yêu cầu.
+# viết code
+import sys
 
-2. Đề xuất giải pháp:
-- Sử dụng hàm input() để thu thập dữ liệu từ bàn phím.
-- Sử dụng F-string (f"...") để ghép nối các biến vào khung văn bản của phiếu 
-  khám. F-string là công cụ tối ưu và chuyên nghiệp nhất trong Python để 
-  định dạng chuỗi, giúp tránh lỗi thiếu khoảng trắng khi dùng toán tử cộng (+).
-- Sử dụng hàm print() để xuất kết quả ra màn hình CLI.
+raw_name = input("Nhập họ và tên bệnh nhân: ")
+raw_age = input("Nhập tuổi bệnh nhân: ")
 
-3. Thiết kế thuật toán (Pseudocode):
-- Bước 1: In ra màn hình dòng tiêu đề hệ thống.
-- Bước 2: Dùng input() yêu cầu nhập Họ tên, gán vào biến ho_ten.
-- Bước 3: Dùng input() yêu cầu nhập Mã bệnh án, gán vào biến ma_ba.
-- Bước 4: Dùng input() yêu cầu nhập Khoa khám, gán vào biến khoa_kham.
-- Bước 5: Tạo biến phieu_kham, dùng f-string nhúng 3 biến trên vào chuỗi template.
-- Bước 6: In thông báo xác nhận thành công và hiển thị biến phieu_kham.
-"""
+patient_name = raw_name.strip()
 
-# (2) TRIỂN KHAI CODE (PYTHON)
+if not raw_age.isdigit() and not (raw_age.startswith('-') and raw_age[1:].isdigit()):
+    print("\n[LỖI]: Tuổi nhập vào phải là một số nguyên hợp lệ!")
+    sys.exit()
 
-# 1. Hiển thị tiêu đề
-print("--- HỆ THỐNG TIẾP NHẬN BỆNH ÁN ---")
+patient_age = int(raw_age)
 
-# 2. Thu thập dữ liệu (Input)
-ho_ten = input("Nhập họ và tên bệnh nhân: ")
-ma_ba = input("Nhập mã bệnh án (VD: BN1024): ")
-khoa_kham = input("Nhập Khoa/Phòng khám chỉ định: ")
+if patient_name == "" or patient_age < 0 or patient_age > 150:
+    print("\n[LỖI]: Tên không hợp lệ hoặc Tuổi nằm ngoài phạm vi con người (0-150)!")
+    sys.exit()
 
-# 3. Xử lý định dạng (Process) bằng F-string
-phieu_kham_dien_tu = f"Bệnh nhân: [{ho_ten}] - Mã BA: [{ma_ba}] - Chuyển tới: [{khoa_kham}]"
+if patient_age < 6:
+    classification = "ƯU TIÊN: Bệnh nhi - Chuyển thẳng phòng khám Nhi."
+elif patient_age >= 80:
+    classification = "ƯU TIÊN: Người cao tuổi - Hỗ trợ xe lăn, chuyển phòng khám Lão khoa."
+else:
+    classification = "KHÁM THƯỜNG: Vui lòng lấy số thứ tự và chờ tới lượt tại sảnh."
 
-# 4. Hiển thị kết quả (Output)
-print("\n[HỆ THỐNG] Đã tiếp nhận và tạo Phiếu khám điện tử thành công!")
-print("-" * 75)
-print(phieu_kham_dien_tu)
-print("-" * 75)
+print("       PHIẾU KHÁM BỆNH ĐIỆN TỬ            ")
+print("==========================================")
+print(" Họ và tên : {}".format(patient_name))
+print(" Tuổi      : {} tuổi".format(patient_age))
+print(" Trạng thái: {}".format(classification))
